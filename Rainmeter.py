@@ -34,7 +34,7 @@ try:
             message = f"Cuaca cerah!"
             print("No rain detected.")
 
-        topic = "topicSIC/MQTTdemo"
+        topic = "119/SensorHujan"
         client.publish(topic, message)        
         time.sleep(1)  # Wait for a second before reading again
 
