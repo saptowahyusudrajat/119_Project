@@ -1,5 +1,17 @@
 import RPi.GPIO as GPIO
 import time
+import paho.mqtt.client as mqtt
+
+
+# MQTT broker details
+broker_address = "broker.hivemq.com"  # Replace with your MQTT broker address
+broker_port = 1883  # Default MQTT port
+
+# Create an MQTT client
+client = mqtt.Client("publisher")
+
+# Connect to the broker
+client.connect(broker_address, broker_port)
 
 # Set the GPIO mode to BCM
 GPIO.setmode(GPIO.BCM)
@@ -17,9 +29,13 @@ try:
         
         if rain_value == GPIO.LOW:
             print("It's raining!")
+            message = f"Hujan bos!"
         else:
+            message = f"Cuaca cerah!"
             print("No rain detected.")
-        
+
+        topic = "topicSIC/MQTTdemo"
+        client.publish(topic, message)        
         time.sleep(1)  # Wait for a second before reading again
 
 except KeyboardInterrupt:
