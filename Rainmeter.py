@@ -1,6 +1,7 @@
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 import time
 import paho.mqtt.client as mqtt
+import random
 
 
 # MQTT broker details
@@ -14,29 +15,27 @@ client = mqtt.Client("publisher")
 client.connect(broker_address, broker_port)
 
 # Set the GPIO mode to BCM
-GPIO.setmode(GPIO.BCM)
+#GPIO.setmode(GPIO.BCM)
 
 # Define the GPIO pin connected to the rain sensor's DO pin
-rain_sensor_pin = 17
+#rain_sensor_pin = 17
 
 # Set up the GPIO pin for input
-GPIO.setup(rain_sensor_pin, GPIO.IN)
+#GPIO.setup(rain_sensor_pin, GPIO.IN)
 
 try:
     while True:
         # Read the digital value from the rain sensor
-        rain_value = GPIO.input(rain_sensor_pin)
+        #rain_value = GPIO.input(rain_sensor_pin)
         
-        if rain_value == GPIO.LOW:
-            print("It's raining!")
-            message = f"Hujan bos!"
-        else:
-            message = f"Cuaca cerah!"
-            print("No rain detected.")
+        misal_sensor = random.randint(0, 1000)
+        message = f"{misal_sensor}"
+        print (message)
 
         topic = "119/SensorHujan"
         client.publish(topic, message)        
-        time.sleep(1)  # Wait for a second before reading again
+        time.sleep(0.25)  # Wait for a second before reading again
 
 except KeyboardInterrupt:
-    GPIO.cleanup()  # Clean up GPIO configuration on program exit
+    #GPIO.cleanup()  # Clean up GPIO configuration on program exit
+    client.disconnect()
