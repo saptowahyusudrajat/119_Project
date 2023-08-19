@@ -23,12 +23,10 @@ def setup_servo():
     servo.start(0)  # Start PWM with a duty cycle of 0 (servo is in the closed position)
     return servo
 
-# Control the servo based on LDR sensor data
-def control_servo(ldr_data, servo):
-    if ldr_data == 1:
-        servo.ChangeDutyCycle(0)  # Close the servo (0% duty cycle)
-    elif ldr_data == 0:
-        servo.ChangeDutyCycle(7.5)  # Open the servo (7.5% duty cycle)
+# Control the servo to move to a specific angle
+def move_servo(servo, angle):
+    duty_cycle = 2.5 + (angle / 18)  # Convert angle to duty cycle (0-180 degrees)
+    servo.ChangeDutyCycle(duty_cycle)
 
 def read_dht11_data():
     sensor = Adafruit_DHT.DHT11
@@ -80,7 +78,10 @@ if __name__ == "__main__":
                 print("Failed to read DHT11 data.")
             
             # Control the servo based on LDR sensor data
-            control_servo(ldr_data, servo)
+            if ldr_data == 1:
+                move_servo(servo, 0)  # Move servo to 0 degrees
+            elif ldr_data == 0:
+                move_servo(servo, 90)  # Move servo to 90 degrees
 
             time.sleep(2)  # Adjust the time interval as needed
 
